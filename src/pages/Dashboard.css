@@ -1,0 +1,17 @@
+#DashboardTable .cost{
+    font-family: "Aldrich", sans-serif;
+    font-variant-numeric: tabular-nums;
+}
+
+#DashboardTable .cost::after{
+    content: "$";
+}
+
+.rdp-root {
+    background-color: white;
+
+}
+
+.rdp-button_previous{
+    color: black;
+}

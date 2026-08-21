@@ -1,6 +1,10 @@
 import Table from "@/components/ui/Table/Table"
+import "./Dashboard.css"
+import Calendar from "@/features/dashboard/components/Calendar/Calendar";
 
 const Dashboard = () => {
+
+  // Sample Data
   const data = [
     {
       name: "rent",
@@ -19,6 +23,7 @@ const Dashboard = () => {
     },
   ]
 
+  // Create Action column and include buttons
   const tableData = data.map((row, index) => ({
     ...row,
     Action: (
@@ -36,10 +41,12 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div>
-        <p>Month 1 | Month 2 | Month 3</p>
+      <div className="Nav">
+        <Calendar />
       </div>
-      <Table columns={Object.keys(tableData[0])} data={tableData} />
+      <div className="Main">
+        <Table id="DashboardTable" columns={Object.keys(tableData[0])} data={tableData} />
+      </div>
     </div>
   )
 }
