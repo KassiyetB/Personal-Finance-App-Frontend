@@ -1,6 +1,6 @@
 import Table from "@/components/ui/Table/Table"
 import "./Dashboard.css"
-import Calendar from "@/features/dashboard/components/Calendar/Calendar";
+import MonthYearPicker from "@/features/dashboard/components/Calendar/MonthYearPicker";
 
 const Dashboard = () => {
 
@@ -42,7 +42,7 @@ const Dashboard = () => {
   return (
     <div>
       <div className="Nav">
-        <Calendar />
+        <MonthYearPicker />
       </div>
       <div className="Main">
         <Table id="DashboardTable" columns={Object.keys(tableData[0])} data={tableData} />
