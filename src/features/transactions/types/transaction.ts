@@ -1,11 +1,10 @@
+import type { Category } from "./category";
+
 export type TransactionType = "INCOME" | "EXPENSE";
 
 export type TransactionSource = "MANUAL" | "RECURRING";
 
-export interface Category {
-    id: string;
-    name: string;
-}
+
 
 export interface Transaction {
     id: string;
@@ -25,3 +24,12 @@ export interface Transaction {
 
     category: Category;
 }
+
+export interface CreateTransactionDto {
+    type: TransactionType;
+    name: string;
+    amount: number;
+    date: string;
+    categoryId: string;
+    userId: string;
+};

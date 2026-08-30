@@ -1,0 +1,29 @@
+.modalDialog {
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  background: white;
+  max-width: 500px;
+  width: 100%;
+  margin:  auto;
+}
+
+.modalDialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+
+.modalBody{
+    padding:20px;
+    border-radius: 0 0 10px 10px;
+    background-color: #ddd;
+}
+
+.modalHeader{
+    padding: 20px 20px 10px 20px;
+    border-radius:10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}

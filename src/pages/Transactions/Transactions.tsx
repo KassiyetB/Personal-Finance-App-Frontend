@@ -1,11 +1,16 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTransactionStore } from "@/features/transactions/stores/transaction-store";
 import { Table } from "@/components/ui/Table/Table";
 import MonthPicker from "@/components/ui/MonthPicker/MonthPicker";
+import CreateTransactionModal from "@/features/transactions/components/CreateTransactionModal/CreateTransactionModal";
 
 const TEST_USER_ID = import.meta.env.VITE_TEST_USER_ID
 
 const Transactions = () => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const {
     transactions,
     selectedMonth,
@@ -53,6 +58,13 @@ const Transactions = () => {
     
     <div>
       <MonthPicker selectedMonth={selectedMonth}  setSelectedMonth={setSelectedMonth} />
+      <button onClick={() => setIsModalOpen(true)}> Create Transaction </button>
+      {isModalOpen && (
+        <CreateTransactionModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
       {loading && <p>Loading</p>}
       <Table id="TransactionsTable" data={tableData} />
       {error && <p>{error}</p>}

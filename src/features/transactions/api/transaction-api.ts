@@ -1,4 +1,4 @@
-import type { Transaction } from "../types/transaction";
+import type { Transaction, CreateTransactionDto } from "../types/transaction";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,3 +14,21 @@ export async function getTransactions(
 
     return response.json();
 }
+
+export async function createTransaction(
+    data: CreateTransactionDto
+): Promise<CreateTransactionDto> {
+    const response = await fetch( `${API_URL}/transactions`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+        throw new Error("Failed to create transaction");
+    }
+
+    return response.json();
+}
+
