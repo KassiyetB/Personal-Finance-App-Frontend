@@ -1,0 +1,13 @@
+.summarySecition{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    padding: 20px;
+    margin: 20px 0;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.summarySecition * {
+    text-align: center;
+}

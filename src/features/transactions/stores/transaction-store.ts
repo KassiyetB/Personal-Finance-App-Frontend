@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { getTransactions } from "../api/transaction-api";
 import type { Transaction } from "../types/transaction";
+const now = new Date();
 
 interface TransactionState {
   transactions: Transaction[];
@@ -22,7 +23,7 @@ interface TransactionState {
 export const useTransactionStore =
   create<TransactionState>((set) => ({
     transactions: [],
-    selectedMonth: "2026-10",
+    selectedMonth: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`,
 
     loading: false,
     error: null,

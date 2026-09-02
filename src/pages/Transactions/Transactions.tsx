@@ -3,6 +3,7 @@ import { useTransactionStore } from "@/features/transactions/stores/transaction-
 import { Table } from "@/components/ui/Table/Table";
 import MonthPicker from "@/components/ui/MonthPicker/MonthPicker";
 import CreateTransactionModal from "@/features/transactions/components/CreateTransactionModal/CreateTransactionModal";
+import SummarySection from "@/features/transactions/components/SummarySection/SummarySection";
 
 const TEST_USER_ID = import.meta.env.VITE_TEST_USER_ID
 
@@ -65,6 +66,7 @@ const Transactions = () => {
           setIsModalOpen={setIsModalOpen}
         />
       )}
+      <SummarySection transactions={transactions} />
       {loading && <p>Loading</p>}
       <Table id="TransactionsTable" data={tableData} />
       {error && <p>{error}</p>}
