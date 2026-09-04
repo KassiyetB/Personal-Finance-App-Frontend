@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { useTransactionStore } from "@/features/transactions/stores/transaction-store";
 import { Table } from "@/components/ui/Table/Table";
+import type { Transaction } from "@/features/transactions/types/transaction";
 import MonthPicker from "@/components/ui/MonthPicker/MonthPicker";
 import CreateTransactionModal from "@/features/transactions/components/CreateTransactionModal/CreateTransactionModal";
 import SummarySection from "@/features/transactions/components/SummarySection/SummarySection";
+import EditTransactionModal from "@/features/transactions/components/EditTransactionModal/EditTransactionModal";
 
 const TEST_USER_ID = import.meta.env.VITE_TEST_USER_ID
 
 const Transactions = () => {
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
   const {
     transactions,
@@ -21,34 +24,42 @@ const Transactions = () => {
     setSelectedMonth,
   } = useTransactionStore();
 
+  const refreshTransactions = () => {
+    fetchTransactions(TEST_USER_ID, selectedMonth);
+  };
+
   useEffect(() => {
-    fetchTransactions(
-      TEST_USER_ID,
-      selectedMonth,
-    );
-  }, [
-    selectedMonth,
-    fetchTransactions,
-  ]);
+    refreshTransactions();
+  }, [selectedMonth, fetchTransactions]);
+
+  const handleCreateSuccess = () => {
+    setIsCreateModalOpen(false);
+    refreshTransactions();
+  };
+
+  const handleEditSuccess = () => {
+    setSelectedTransaction(null);
+    refreshTransactions();
+  };
 
   // Pick the nessecary data and buttons
-  const tableData = transactions.map((row, index) => ({
-    name: row.name,
-    amount: row.amount,
-    type: row.type,
-    date: new Date(row.date).toLocaleDateString("en-US", {
+  const tableData = transactions.map((transaction) => ({
+    name: transaction.name,
+    amount: transaction.amount,
+    type: transaction.type,
+    date: new Date(transaction.date).toLocaleDateString("en-US", {
       month: "short",
       year: "numeric",
     }),
-    source: row.source,
-    category: row.category.name,
+    source: transaction.source,
+    category: transaction.category.name,
     Action: (
       <div>
-        <button onClick={() => console.log("edit", row)} id={String(index)}>
+        <button onClick={() => setSelectedTransaction(transaction)}>
           Edit
         </button>
 
-        <button onClick={() => console.log("delete", row)} id={String(index)}>
+        <button onClick={() => console.log("delete", transaction)}>
           Delete
         </button>
       </div>
@@ -59,13 +70,28 @@ const Transactions = () => {
     
     <div>
       <MonthPicker selectedMonth={selectedMonth}  setSelectedMonth={setSelectedMonth} />
-      <button onClick={() => setIsModalOpen(true)}> Create Transaction </button>
-      {isModalOpen && (
+      <button onClick={() => setIsCreateModalOpen(true)}> Create Transaction </button>
+      {isCreateModalOpen && (
         <CreateTransactionModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isCreateModalOpen}
+          setIsModalOpen={setIsCreateModalOpen}
+          onSuccess={handleCreateSuccess}
         />
       )}
+
+      {selectedTransaction && (
+        <EditTransactionModal
+          transaction={selectedTransaction}
+          isModalOpen={Boolean(selectedTransaction)}
+          setIsModalOpen={(isOpen) => {
+            if (!isOpen) {
+              setSelectedTransaction(null);
+            }
+          }}
+          onSuccess={handleEditSuccess}
+        />
+      )}
+      
       <SummarySection transactions={transactions} />
       {loading && <p>Loading</p>}
       <Table id="TransactionsTable" data={tableData} />

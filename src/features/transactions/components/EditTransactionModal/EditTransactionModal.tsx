@@ -1,29 +1,27 @@
 import { useState, useEffect } from "react"
-import { createTransaction } from "../../api/transaction-api"
-import type { CreateTransactionDto } from "../../types/transaction";
+import { editTransaction } from "../../api/transaction-api"
+import type { Transaction, UpdateTransactionDto } from "../../types/transaction";
 import { useCategoryStore } from "../../stores/category-store";
 import Modal from "@/components/ui/Modal/Modal";
-import styles from "./CreateTransactionModal.module.css"
+import styles from "./EditTransactionModal.module.css"
 
 const TEST_USER_ID = import.meta.env.VITE_TEST_USER_ID
 
-const initialTransaction: CreateTransactionDto = {
-    userId: TEST_USER_ID,
-    name: "",
-    type: "EXPENSE",
-    amount: 0,
-    date: new Date().toISOString(),
-    categoryId: ""
-}
-
-interface createTransactionModalProps {
+interface editTransactionModalProps {
     isModalOpen: boolean;
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    transaction: Transaction;
     onSuccess?: () => void;
 }
 
-const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: createTransactionModalProps) => {
-    const [transactionData, setTransactionData] = useState<CreateTransactionDto>(initialTransaction);
+const EditTransactionModal = ({isModalOpen, setIsModalOpen, transaction, onSuccess}: editTransactionModalProps) => {
+    const [transactionData, setTransactionData] = useState<UpdateTransactionDto>({
+        type: transaction.type,
+        name: transaction.name,
+        amount: Number(transaction.amount),
+        date: transaction.date,
+        categoryId: transaction.categoryId
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -37,10 +35,10 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
     } = useCategoryStore();
 
     useEffect(() => {
-        if (isModalOpen) {
-            fetchCategories(TEST_USER_ID);
-        }
-    }, [isModalOpen, fetchCategories]);
+        fetchCategories(TEST_USER_ID);
+      }, [
+        fetchCategories
+    ]);
 
 
     const handleChange = (
@@ -55,7 +53,6 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
 
     const handleClose = () => {
         setError("");
-        setTransactionData(initialTransaction);
         setIsModalOpen(false);
     };
 
@@ -68,7 +65,11 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
             setIsLoading(true);
             setError("");
 
-            await createTransaction(transactionData);
+            await editTransaction(
+                TEST_USER_ID,
+                transaction.id,
+                transactionData
+            );
 
             handleClose();
             onSuccess?.();
@@ -85,7 +86,7 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
             <Modal 
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                title="Create Transaction"
+                title="Edit Transaction"
                 content={
                     <form className={styles.transactionForm} onSubmit={handleSubmit}>
                         <input
@@ -112,7 +113,7 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
                             name="amount"
                             placeholder="Amount"
                             value={
-                                transactionData.amount == 0 ? "" : transactionData.amount
+                                Number(transactionData.amount) == 0 ? "" : transactionData.amount
                             }
                             onChange={handleChange}
                         />
@@ -120,7 +121,7 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
                         {error && <p>{error}</p>}
 
                         <button type="submit" disabled={isLoading}>
-                            {isLoading ? "Creating..." : "Create"}
+                            {isLoading ? "Editing..." : "Edit"}
                         </button>
                     </form>
                 } 
@@ -129,4 +130,4 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
     )
 }
 
-export default CreateTransactionModal
+export default EditTransactionModal

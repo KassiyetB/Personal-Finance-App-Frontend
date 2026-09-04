@@ -33,3 +33,12 @@ export interface CreateTransactionDto {
     categoryId: string;
     userId: string;
 };
+
+export interface UpdateTransactionDto {
+  type?: TransactionType;
+  name?: string;
+  amount?: number;
+  date?: string;
+  categoryId?: string;
+}
+

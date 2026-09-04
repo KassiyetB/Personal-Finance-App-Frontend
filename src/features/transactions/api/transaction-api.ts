@@ -1,4 +1,4 @@
-import type { Transaction, CreateTransactionDto } from "../types/transaction";
+import type { Transaction, CreateTransactionDto, UpdateTransactionDto } from "../types/transaction";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -29,6 +29,25 @@ export async function createTransaction(
         throw new Error("Failed to create transaction");
     }
 
+    return response.json();
+}
+
+export async function editTransaction(
+    userId: string,
+    transactionId: string,
+    data: UpdateTransactionDto
+): Promise<Transaction> {
+    const response = await fetch( `${API_URL}/transactions/${transactionId}?userId=${userId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+        throw new Error("Failed to update transaction");
+    }
+    
     return response.json();
 }
 

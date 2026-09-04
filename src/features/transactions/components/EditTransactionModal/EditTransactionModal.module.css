@@ -1,0 +1,9 @@
+.transactionForm{
+    display: flex;
+    flex-direction: column;
+}
+
+.transactionForm *{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
