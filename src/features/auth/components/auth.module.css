@@ -1,0 +1,18 @@
+.authForm{
+    display: flex;
+    flex-direction: column;
+}
+
+.authForm *{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.authNav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.authNav * {
+    cursor: pointer;
+}

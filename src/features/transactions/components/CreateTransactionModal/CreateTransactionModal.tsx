@@ -86,45 +86,44 @@ const CreateTransactionModal = ({isModalOpen, setIsModalOpen, onSuccess}: create
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title="Create Transaction"
-                content={
-                    <form className={styles.transactionForm} onSubmit={handleSubmit}>
-                        <input
-                            name="name"
-                            placeholder="Name" 
-                            value={transactionData.name}
-                            onChange={handleChange}
-                        />
-                        <select id="category" name="categoryId" onChange={handleChange}>
-                            <option value="">Category</option>
-                            {categories.map(category => {
-                                return <option key={category.name} value={category.id}>{category.name}</option>
-                            })}
-                        </select>
-                        {categoryError && <p>{categoryError}</p>}
+            >
+                <form className={styles.transactionForm} onSubmit={handleSubmit}>
+                    <input
+                        name="name"
+                        placeholder="Name" 
+                        value={transactionData.name}
+                        onChange={handleChange}
+                    />
+                    <select id="category" name="categoryId" onChange={handleChange}>
+                        <option value="">Category</option>
+                        {categories.map(category => {
+                            return <option key={category.name} value={category.id}>{category.name}</option>
+                        })}
+                    </select>
+                    {categoryError && <p>{categoryError}</p>}
 
-                        <select id="type" name="type" onChange={handleChange}>
-                            <option value="EXPENSE">Expense</option>
-                            <option value="INCOME">Income</option>
-                        </select>
-                        
-                        <input
-                            type="number"
-                            name="amount"
-                            placeholder="Amount"
-                            value={
-                                transactionData.amount == 0 ? "" : transactionData.amount
-                            }
-                            onChange={handleChange}
-                        />
+                    <select id="type" name="type" onChange={handleChange}>
+                        <option value="EXPENSE">Expense</option>
+                        <option value="INCOME">Income</option>
+                    </select>
+                    
+                    <input
+                        type="number"
+                        name="amount"
+                        placeholder="Amount"
+                        value={
+                            transactionData.amount == 0 ? "" : transactionData.amount
+                        }
+                        onChange={handleChange}
+                    />
 
-                        {error && <p>{error}</p>}
+                    {error && <p>{error}</p>}
 
-                        <button type="submit" disabled={isLoading}>
-                            {isLoading ? "Creating..." : "Create"}
-                        </button>
-                    </form>
-                } 
-            />
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? "Creating..." : "Create"}
+                    </button>
+                </form>
+            </Modal>
         
     )
 }

@@ -66,6 +66,7 @@ const Transactions = () => {
     ),
   }));
 
+  console.log("selected month is:" + selectedMonth);
   return (
     
     <div>

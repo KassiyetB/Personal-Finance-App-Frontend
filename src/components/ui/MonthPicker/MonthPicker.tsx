@@ -9,10 +9,11 @@ const MonthPicker = ({selectedMonth, setSelectedMonth}: MonthPickerProps) => {
     
     const date = new Date(`${selectedMonth}-01`);
 
-    const formattedDate = new Date(`${date}-01`).toLocaleDateString("en-US", {
+    const formattedDate = date.toLocaleDateString("en-US", {
         month: "long",
         year: "numeric",
     });
+
 
     const handlePrevious = () => {
         const previous = new Date(date);

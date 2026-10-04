@@ -4,12 +4,19 @@ import styles from "./Modal.module.css"
 
 interface modalProps{
     title: string;
-    content: ReactNode;
+    children: ReactNode;
     isOpen: boolean;
     onClose: () => void;
+    closeButton?: boolean;
 }
 
-const Modal = ({title, content, isOpen, onClose}: modalProps) => {
+const Modal = ({
+    title, 
+    children, 
+    isOpen, 
+    onClose, 
+    closeButton = true
+}: modalProps) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
@@ -32,10 +39,10 @@ const Modal = ({title, content, isOpen, onClose}: modalProps) => {
         <div className={styles.modalBox}>
             <div className={styles.modalHeader}>
             <p>{title}</p>
-            <CloseBtn onClick={onClose} />
+            {closeButton && <CloseBtn onClick={onClose} />}
             </div>
             <div className={styles.modalBody}>
-            {content}
+            {children}
             </div>
         </div>
         </dialog>
